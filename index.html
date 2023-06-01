@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cypress click slotted custom element.</title>
+    </head>
+    <body>
+        <my-button>I can be clicked.</my-button>
+
+        <my-button><my-content></my-content></my-button>
+
+        <div id="count"></div>
+
+        <script>
+            class Child extends HTMLElement {
+                constructor() {
+                    super();
+                    let root = this.attachShadow({ mode: "open" });
+                    root.innerHTML = `<div>cypress thinks this is covering the button...</div>`;
+                }
+            }
+
+            class Button extends HTMLElement {
+                constructor() {
+                    super();
+                    let root = this.attachShadow({ mode: "open" });
+                    root.innerHTML = `<button><slot></slot></button>`;
+                }
+            }
+
+            window.customElements.define("my-content", Child);
+            window.customElements.define("my-button", Button);
+
+            let i = 0;
+            [...document.querySelectorAll("my-button")].forEach(el => {
+                el.addEventListener("click", () => {
+                    document.querySelector("#count").textContent = ++i;
+                });
+            });
+        </script>
+    </body>
+</html>
