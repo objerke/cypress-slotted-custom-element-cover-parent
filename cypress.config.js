@@ -1,11 +1,8 @@
-const httpServer = require('http-server')
-
-httpServer.createServer({
-  root: __dirname,
-}).listen(8083);
-
 module.exports = {
-  e2e: {
-    setupNodeEvents(on, config) {},
-  },
-}
+    fixturesFolder: false,
+    pluginsFolder: false,
+    e2e: {
+        supportFile: false,
+        setupNodeEvents(on, config) {}
+    }
+};
